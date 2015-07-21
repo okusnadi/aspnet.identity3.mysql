@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Security.Claims;
+using Microsoft.Framework.Configuration;
 
 namespace AspNet.Identity.MySql
 {
@@ -29,12 +30,12 @@ namespace AspNet.Identity.MySql
         private UserRolesTable<TKey> userRolesTable;
         private UserClaimsTable<TKey> userClaimsTable;
         private UserLoginsTable<TKey> userLoginsTable;
-        public MySqlDatabase Database { get; private set; }
+        public MySqlDatabase Database { get; set; }
 
-        public UserStore()
-        {
-            new UserStore<TUser,TRole,TKey>(new MySqlDatabase());
-        }
+        //public UserStore()
+        //{
+        //    new UserStore<TUser,TRole,TKey>(new MySqlDatabase());
+        //}
 
         public UserStore(MySqlDatabase database)
         {

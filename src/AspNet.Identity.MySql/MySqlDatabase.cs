@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.Framework.Configuration;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,11 +15,17 @@ namespace AspNet.Identity.MySql
     public class MySqlDatabase : IDisposable
     {
         private MySqlConnection _connection;
+        IConfiguration _config;
+
+        //public MySqlDatabase()
+        //{
+            
+        //}
 
         /// Default constructor which uses the "DefaultConnection" connectionString
         /// </summary>
-        public MySqlDatabase()
-            : this("DefaultConnection")
+        public MySqlDatabase(IConfiguration config)
+            : this(config, "DefaultConnection")
         {
         }
 
@@ -26,9 +33,11 @@ namespace AspNet.Identity.MySql
         /// Constructor which takes the connection string name
         /// </summary>
         /// <param name="connectionStringName"></param>
-        public MySqlDatabase(string connectionStringName)
+        public MySqlDatabase(IConfiguration config,string connectionStringName)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;  
+            this._config = config;                       
+            string connectionString = this._config.Get("Data:DefaultConnection:ConnectionString");
             _connection = new MySqlConnection(connectionString);
         }
 
