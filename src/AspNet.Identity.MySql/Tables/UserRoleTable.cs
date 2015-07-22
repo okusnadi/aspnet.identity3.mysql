@@ -24,10 +24,10 @@ namespace AspNet.Identity.MySql
         /// </summary>
         /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public List<string> FindByUserId(string userId)
+        public List<string> FindByUserId(TKey userId)
         {
             List<string> roles = new List<string>();
-            string commandText = "Select Roles.Name from UserRoles, Roles where UserRoles.UserId = @userId and UserRoles.RoleId = Roles.Id";
+            string commandText = "select role.name from userrole, role where userrole.user_id = @userId and userrole.role_id = role.id";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@userId", userId);
 

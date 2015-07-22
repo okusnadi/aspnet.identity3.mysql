@@ -25,16 +25,16 @@ namespace AspNet.Identity.MySql
         /// </summary>
         /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public ClaimsIdentity FindByUserId(string userId)
+        public ClaimsIdentity FindByUserId(TKey userId)
         {
             ClaimsIdentity claims = new ClaimsIdentity();
-            string commandText = "Select * from UserClaims where UserId = @userId";
+            string commandText = "select * from userclaim where user_id = @userId";
             Dictionary<string, object> parameters = new Dictionary<string, object>() { { "@UserId", userId } };
 
             var rows = _database.Query(commandText, parameters);
             foreach (var row in rows)
             {
-                Claim claim = new Claim(row["ClaimType"], row["ClaimValue"]);
+                Claim claim = new Claim(row["claim_type"], row["claim_value"]);
                 claims.AddClaim(claim);
             }
 

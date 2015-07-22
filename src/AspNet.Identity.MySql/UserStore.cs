@@ -120,12 +120,18 @@ namespace AspNet.Identity.MySql
 
         public Task<int> GetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            return (Task<int>)Task.FromResult<int>(user.AccessFailedCount);
         }
 
         public Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            ClaimsIdentity identity = userClaimsTable.FindByUserId(user.Id);
+
+            return Task.FromResult<IList<Claim>>(identity.Claims.ToList());
         }
 
         public Task<string> GetEmailAsync(TUser user, CancellationToken cancellationToken)
@@ -139,12 +145,20 @@ namespace AspNet.Identity.MySql
 
         public Task<bool> GetEmailConfirmedAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            return (Task<bool>)Task.FromResult<bool>(user.EmailConfirmed);
         }
 
         public Task<bool> GetLockoutEnabledAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            return (Task<bool>)Task.FromResult<bool>(user.LockoutEnabled);
         }
 
         public Task<DateTimeOffset?> GetLockoutEndDateAsync(TUser user, CancellationToken cancellationToken)
@@ -169,37 +183,74 @@ namespace AspNet.Identity.MySql
 
         public Task<string> GetPasswordHashAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            return (Task<string>)Task.FromResult<string>(user.PasswordHash);
         }
 
         public Task<string> GetPhoneNumberAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            return (Task<string>)Task.FromResult<string>(user.PhoneNumber);
         }
 
         public Task<bool> GetPhoneNumberConfirmedAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            return (Task<bool>)Task.FromResult<bool>(user.PhoneNumberConfirmed);
         }
 
         public Task<IList<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            List<string> roles = userRolesTable.FindByUserId(user.Id);
+            {
+                if (roles != null)
+                {
+                    return Task.FromResult<IList<string>>(roles);
+                }
+            }
+
+            return Task.FromResult<IList<string>>(null);
         }
 
         public Task<string> GetSecurityStampAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            return (Task<string>)Task.FromResult<string>(user.SecurityStamp);
         }
 
         public Task<bool> GetTwoFactorEnabledAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            return (Task<bool>)Task.FromResult<bool>(user.TwoFactorEnabled);
         }
 
         public Task<string> GetUserIdAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            return (Task<string>)Task.FromResult<string>(this.ConvertIdToString(user.Id));
         }
 
         public Task<string> GetUserNameAsync(TUser user, CancellationToken cancellationToken)
@@ -223,7 +274,8 @@ namespace AspNet.Identity.MySql
 
         public Task<bool> HasPasswordAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            return (Task<bool>)Task.FromResult<bool>( !string.IsNullOrEmpty(user.PasswordHash) ? true : false);
         }
 
         public Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
@@ -352,6 +404,22 @@ namespace AspNet.Identity.MySql
         }
         #endregion
 
+        public Task<TUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        {
+            var id = Convert.ChangeType(userId, typeof(TKey));
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentException("Null or empty argument: userId");
+            }
+            TUser result = userTable.GetUserById((TKey)id) as TUser;
+            if (result != null)
+            {
+                return Task.FromResult<TUser>(result);
+            }
+
+            return Task.FromResult<TUser>(null);
+        }
+
         private void ThrowIfDisposed()
         {
             if (this._disposed)
@@ -367,9 +435,11 @@ namespace AspNet.Identity.MySql
             }
         }
 
-        public Task<TUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        public virtual string ConvertIdToString(TKey id)
         {
-            throw new NotImplementedException();
-        }
+            if (id.Equals(default(TKey)))
+                return (string)null;
+            return id.ToString();
+        }        
     }
 }

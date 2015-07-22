@@ -16,10 +16,6 @@
       "frameworkAssemblies": {
         "System.Data": "4.0.0.0"
       }
-<<<<<<< HEAD
     }
-=======
-    }    
->>>>>>> 789232ab3a39ecb430010347d2ceb6d4b1d4a194
   }
 }

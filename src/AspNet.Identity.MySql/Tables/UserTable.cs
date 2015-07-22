@@ -231,7 +231,7 @@ namespace AspNet.Identity.MySql
         private TUser MapRow(Dictionary<string,string> row)
         {
             TUser user = (TUser)Activator.CreateInstance(typeof(TUser));
-            user.Id = (TKey)Convert.ChangeType(row["Id"], typeof(TKey));
+            user.Id = (TKey)Convert.ChangeType(row["id"], typeof(TKey));
             user.UserName = row["username"];
             user.PasswordHash = string.IsNullOrEmpty(row["password_hash"]) ? null : row["password_hash"];
             user.SecurityStamp = string.IsNullOrEmpty(row["security_stamp"]) ? null : row["security_stamp"];
