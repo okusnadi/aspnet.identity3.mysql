@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Security.Claims;
+using Microsoft.Framework.Configuration;
 
 namespace AspNet.Identity.MySql
 {
@@ -29,12 +30,12 @@ namespace AspNet.Identity.MySql
         private UserRolesTable<TKey> userRolesTable;
         private UserClaimsTable<TKey> userClaimsTable;
         private UserLoginsTable<TKey> userLoginsTable;
-        public MySqlDatabase Database { get; private set; }
+        public MySqlDatabase Database { get; set; }
 
-        public UserStore()
-        {
-            new UserStore<TUser,TRole,TKey>(new MySqlDatabase());
-        }
+        //public UserStore()
+        //{
+        //    new UserStore<TUser,TRole,TKey>(new MySqlDatabase());
+        //}
 
         public UserStore(MySqlDatabase database)
         {
@@ -112,7 +113,9 @@ namespace AspNet.Identity.MySql
 
         public Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = userTable.GetUserByName(normalizedUserName).FirstOrDefault();
+            return Task.FromResult<TUser>(user);
         }
 
         public Task<int> GetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
@@ -127,7 +130,11 @@ namespace AspNet.Identity.MySql
 
         public Task<string> GetEmailAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            return (Task<string>)Task.FromResult<string>(user.Email);
         }
 
         public Task<bool> GetEmailConfirmedAsync(TUser user, CancellationToken cancellationToken)
@@ -197,7 +204,11 @@ namespace AspNet.Identity.MySql
 
         public Task<string> GetUserNameAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            return (Task<string>)Task.FromResult<string>(user.UserName);
         }
 
         public Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
@@ -262,7 +273,12 @@ namespace AspNet.Identity.MySql
 
         public Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            user.LockoutEnabled = enabled;
+            return (Task)Task.FromResult<int>(0);
         }
 
         public Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
@@ -272,17 +288,32 @@ namespace AspNet.Identity.MySql
 
         public Task SetNormalizedEmailAsync(TUser user, string normalizedEmail, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            user.NormalizedEmail = normalizedEmail;
+            return (Task)Task.FromResult<int>(0);
         }
 
         public Task SetNormalizedUserNameAsync(TUser user, string normalizedName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            user.NormalizedUserName = normalizedName;
+            return (Task)Task.FromResult<int>(0);
         }
 
         public Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            user.PasswordHash = passwordHash;
+            return (Task)Task.FromResult<int>(0);
         }
 
         public Task SetPhoneNumberAsync(TUser user, string phoneNumber, CancellationToken cancellationToken)
@@ -297,7 +328,12 @@ namespace AspNet.Identity.MySql
 
         public Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            this.ThrowIfDisposed();
+            if ((object)user == null)
+                throw new ArgumentNullException("user");
+            user.SecurityStamp = stamp;
+            return (Task)Task.FromResult<int>(0);
         }
 
         public Task SetTwoFactorEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken)

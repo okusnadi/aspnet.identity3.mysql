@@ -28,7 +28,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public string GetUserName(string userId)
         {
-            string commandText = "Select Name from Users where Id = @id";
+            string commandText = "select Name from user where id = @id";
             Dictionary<string, object> parameters = new Dictionary<string, object>() { { "@id", userId } };
 
             return _database.GetStrValue(commandText, parameters);
@@ -41,7 +41,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public string GetUserId(string userName)
         {
-            string commandText = "Select Id from Users where UserName = @name";
+            string commandText = "select id from Users where username = @name";
             Dictionary<string, object> parameters = new Dictionary<string, object>() { { "@name", userName } };
 
             return _database.GetStrValue(commandText, parameters);
@@ -75,7 +75,7 @@ namespace AspNet.Identity.MySql
         public List<TUser> GetUserByName(string userName)
         {
             List<TUser> users = new List<TUser>();
-            string commandText = "select * from user where user = @name";
+            string commandText = "select * from user where username = @name";
             Dictionary<string, object> parameters = new Dictionary<string, object>() { { "@name", userName } };
 
             var rows = _database.Query(commandText, parameters);
@@ -107,7 +107,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public string GetPasswordHash(string userId)
         {
-            string commandText = "Select PasswordHash from Users where Id = @id";
+            string commandText = "select password_hash from user where Id = @id";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@id", userId);
 
@@ -128,7 +128,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public int SetPasswordHash(string userId, string passwordHash)
         {
-            string commandText = "Update Users set PasswordHash = @pwdHash where Id = @id";
+            string commandText = "update user set password_hash = @pwdHash where Id = @id";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@pwdHash", passwordHash);
             parameters.Add("@id", userId);
@@ -143,7 +143,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public string GetSecurityStamp(string userId)
         {
-            string commandText = "Select SecurityStamp from Users where Id = @id";
+            string commandText = "select security_stamp from user where id = @id";
             Dictionary<string, object> parameters = new Dictionary<string, object>() { { "@id", userId } };
             var result = _database.GetStrValue(commandText, parameters);
 
@@ -157,7 +157,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public int Insert(TUser user)
         {
-            string commandText = @"Insert into Users (Id, username, password_hash, security_stamp,email,email_confirmed,phone_number,phone_number_confirmed, cccess_failed_count,lockout_enabled,lockout_end,two_factor_enabled)
+            string commandText = @"insert into user (Id, username, password_hash, security_stamp,email,email_confirmed,phone_number,phone_number_confirmed, access_failed_count,lockout_enabled,lockout_end,two_factor_enabled)
                 values (@id, @name, @pwdHash, @SecStamp,@email,@emailconfirmed,@phonenumber,@phonenumberconfirmed,@accesscount,@lockoutenabled,@lockoutenddate,@twofactorenabled)";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@id", user.Id);

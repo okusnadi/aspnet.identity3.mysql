@@ -18,10 +18,10 @@ namespace AspNet.Identity.MySql
         private RoleTable<TKey> roleTable;
         public MySqlDatabase Database { get; private set; }
 
-        public RoleStore()
-        {
-            new RoleStore<TRole,TKey>(new MySqlDatabase());
-        }
+        //public RoleStore()
+        //{
+        //    new RoleStore<TRole,TKey>(new MySqlDatabase());
+        //}
 
         public RoleStore(MySqlDatabase database)
         {
