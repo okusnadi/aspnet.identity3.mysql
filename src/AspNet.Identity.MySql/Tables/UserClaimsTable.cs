@@ -48,7 +48,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public int Delete(string userId)
         {
-            string commandText = "Delete from UserClaims where UserId = @userId";
+            string commandText = "delete from userclaim where user_id = @userId";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("userId", userId);
 
@@ -63,7 +63,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public int Insert(Claim userClaim, string userId)
         {
-            string commandText = "Insert into UserClaims (ClaimValue, ClaimType, UserId) values (@value, @type, @userId)";
+            string commandText = "insert into userclaim (claim_value, claim_type, user_id) values (@value, @type, @userId)";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("value", userClaim.Value);
             parameters.Add("type", userClaim.Type);
@@ -80,7 +80,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public int Delete(IdentityUser<TKey> user, Claim claim)
         {
-            string commandText = "Delete from UserClaims where UserId = @userId and @ClaimValue = @value and ClaimType = @type";
+            string commandText = "delete from userclaim where user_id = @userId and claim_value = @value and claim_type = @type";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("userId", user.Id);
             parameters.Add("value", claim.Value);

@@ -28,7 +28,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public int Delete(IdentityUser<TKey> user, UserLoginInfo login)
         {
-            string commandText = "Delete from UserLogins where UserId = @userId and LoginProvider = @loginProvider and ProviderKey = @providerKey";
+            string commandText = "delete from userlogin where user_id = @userId and login_provider = @loginProvider and provider_key = @providerKey";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("UserId", user.Id);
             parameters.Add("loginProvider", login.LoginProvider);
@@ -44,7 +44,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public int Delete(string userId)
         {
-            string commandText = "Delete from UserLogins where UserId = @userId";
+            string commandText = "delete from userlogin where user_id = @userId";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("UserId", userId);
 
@@ -59,7 +59,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public int Insert(IdentityUser<TKey> user, UserLoginInfo login)
         {
-            string commandText = "Insert into UserLogins (LoginProvider, ProviderKey, UserId) values (@loginProvider, @providerKey, @userId)";
+            string commandText = "insert into userlogin (login_provider, provider_key, user_id) values (@loginProvider, @providerKey, @userId)";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("loginProvider", login.LoginProvider);
             parameters.Add("providerKey", login.ProviderKey);
@@ -75,7 +75,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public string FindUserIdByLogin(UserLoginInfo userLogin)
         {
-            string commandText = "Select UserId from UserLogins where LoginProvider = @loginProvider and ProviderKey = @providerKey";
+            string commandText = "select user_id from userlogin where login_provider = @loginProvider and provider_key = @providerKey";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("loginProvider", userLogin.LoginProvider);
             parameters.Add("providerKey", userLogin.ProviderKey);
@@ -91,7 +91,7 @@ namespace AspNet.Identity.MySql
         public List<UserLoginInfo> FindByUserId(TKey userId)
         {
             List<UserLoginInfo> logins = new List<UserLoginInfo>();
-            string commandText = "select * from userlogin where userId = @userId";
+            string commandText = "select * from userlogin where user_id = @userId";
             Dictionary<string, object> parameters = new Dictionary<string, object>() { { "@userId", userId } };
 
             var rows = _database.Query(commandText, parameters);

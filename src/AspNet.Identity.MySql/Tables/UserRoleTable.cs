@@ -47,7 +47,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public int Delete(string userId)
         {
-            string commandText = "Delete from UserRoles where UserId = @userId";
+            string commandText = "delete from UserRoles where user_id = @userId";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("UserId", userId);
 
@@ -62,7 +62,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public int Insert(IdentityUser<TKey> user, TKey roleId)
         {
-            string commandText = "Insert into UserRoles (UserId, RoleId) values (@userId, @roleId)";
+            string commandText = "insert into userrole (user_id, role_id) values (@userId, @roleId)";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("userId", user.Id);
             parameters.Add("roleId", roleId);

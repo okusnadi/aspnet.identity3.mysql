@@ -168,7 +168,19 @@ namespace AspNet.Identity.MySql
 
         public Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            List<UserLoginInfo> userLogins = new List<UserLoginInfo>();
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            List<UserLoginInfo> logins = userLoginsTable.FindByUserId(user.Id);
+            if (logins != null)
+            {
+                return Task.FromResult<IList<UserLoginInfo>>(logins);
+            }
+
+            return Task.FromResult<IList<UserLoginInfo>>(null); 
         }
 
         public Task<string> GetNormalizedEmailAsync(TUser user, CancellationToken cancellationToken)

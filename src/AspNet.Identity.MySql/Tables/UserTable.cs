@@ -41,7 +41,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public string GetUserId(string userName)
         {
-            string commandText = "select id from Users where username = @name";
+            string commandText = "select id from user where username = @name";
             Dictionary<string, object> parameters = new Dictionary<string, object>() { { "@name", userName } };
 
             return _database.GetStrValue(commandText, parameters);
@@ -55,7 +55,7 @@ namespace AspNet.Identity.MySql
         public TUser GetUserById(TKey userId)
         {
             TUser user = null;
-            string commandText = "select * from user where Id = @id";
+            string commandText = "select * from user where id = @id";
             Dictionary<string, object> parameters = new Dictionary<string, object>() { { "@id", userId } };
 
             var rows = _database.Query(commandText, parameters);
@@ -107,7 +107,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         public string GetPasswordHash(string userId)
         {
-            string commandText = "select password_hash from user where Id = @id";
+            string commandText = "select password_hash from user where id = @id";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@id", userId);
 
@@ -183,7 +183,7 @@ namespace AspNet.Identity.MySql
         /// <returns></returns>
         private int Delete(TKey userId)
         {
-            string commandText = "delete from user where Id = @userId";
+            string commandText = "delete from user where id = @userId";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@userId", userId);
 
@@ -210,7 +210,7 @@ namespace AspNet.Identity.MySql
             string commandText = @"update user set username = @userName, password_hash = @pswHash, security_stamp = @secStamp, 
                 email=@email, email_confirmed=@emailconfirmed, phone_number=@phonenumber, phone_number_confirmed=@phonenumberconfirmed,
                 access_failed_count=@accesscount, lockout_enabled=@lockoutenabled, lockout_end=@lockoutenddate, two_factor_enabled=@twofactorenabled  
-                where ie = @userId";
+                where id = @userId";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@userName", user.UserName);
             parameters.Add("@pswHash", user.PasswordHash);
