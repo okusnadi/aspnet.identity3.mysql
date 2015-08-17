@@ -89,7 +89,7 @@ namespace AspNet.Identity.MySql
 
         public TUser GetUserByEmail(string email)
         {
-            string commandText = "select * from user where email = @email";
+            string commandText = "select * from `user` where email = @email";
             var parameters = new Dictionary<string, object>() { { "@email", email } };
             var rows = _database.Query(commandText, parameters);
             if (rows != null && rows.Count == 1)
