@@ -37,7 +37,7 @@ namespace AspNet.Identity.MySql
         {
             //string connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;  
             this._config = config;                       
-            string connectionString = this._config.Get("Data:DefaultConnection:ConnectionString");
+            string connectionString = this._config.GetSection("Data:DefaultConnection:ConnectionString").Value;
             _connection = new MySqlConnection(connectionString);
         }
 
